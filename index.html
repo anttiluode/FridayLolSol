@@ -182,9 +182,12 @@ function notify(text) { $('toast').textContent = text; $('toast').classList.add(
 async function audio() {
  if (context) {await context.resume();return;}
  const Audio = window.AudioContext || window.webkitAudioContext;
- if (!Audio || !Audio.prototype.audioWorklet) throw Error('AudioWorklet is unavailable. Use a recent browser on HTTPS or localhost.');
- context = new Audio({latencyHint:'interactive'});
- await context.audioWorklet.addModule(new URL('residue-worklet.js',location.href).href);
+ if (!Audio) throw Error('Web Audio is unavailable in this browser.');
+ const candidate = new Audio({latencyHint:'interactive'});
+ if (!candidate.audioWorklet) {await candidate.close();throw Error('AudioWorklet is unavailable. Use HTTPS or localhost in a recent browser.');}
+ try {await candidate.audioWorklet.addModule(new URL('residue-worklet.js',location.href).href);}
+ catch(e){await candidate.close();throw e;}
+ context = candidate;
  engine = new AudioWorkletNode(context,'residue-engine',{numberOfInputs:MAX_TRACKS,numberOfOutputs:1,outputChannelCount:[2]});
  analyser = context.createAnalyser();
  analyser.fftSize = 2048; analyser.smoothingTimeConstant = .78;
@@ -318,7 +321,7 @@ function seekTo(t){
  if(shouldPlay && playhead<duration()){schedule();}
  refreshCounters();
 }
-function refreshTransport(){if(playing){const pos=position();pause();playhead=Math.min(pos,duration());schedule();}else playhead=Math.min(playhead,duration());refreshCounters();}
+function refreshTransport(){if(playing){const pos=position();pause();playhead=Math.min(pos,duration());if(tracks.length)schedule();}else playhead=Math.min(playhead,duration());refreshCounters();}
 async function upload(files){
  const all=Array.from(files).filter(f=>f.type.startsWith('audio/')||/\.(wav|mp3|ogg|flac|aac|m4a|opus|aiff?)$/i.test(f.name));
  if(!all.length){notify('Choose audio files.');return;}
