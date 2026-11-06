@@ -30,3 +30,10 @@ assert.equal(test([A,A],'weave',[true,true],['0-1'],{delayMs:2}),0,'identical al
 assert.ok(test([A,B],'imprint')>.0001,'imprint responds to distinct songs');
 assert.equal(test([A],'imprint',[true,false]),0,'imprint with one song silent');
 console.log('10 DSP assertions passed');
+
+const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+const match=html.match(/<script id="embedded-residue-engine" type="text\\/plain">\\s*([\\s\\S]*?)\\s*<\\/script>/);
+assert.ok(match,'standalone HTML includes its local AudioWorklet');
+assert.equal(match[1].trim(), content.trim(),'embedded engine matches the standalone DSP source exactly');
+assert.ok(html.includes("data:text/javascript;charset=utf-8,"),'local AudioWorklet uses data module source');
+console.log('Embedded standalone audio engine matches repository worklet');
