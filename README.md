@@ -10,11 +10,11 @@ GitHub Pages is configured for this repository. When its deployment finishes, op
 
 https://anttiluode.github.io/FridayLolSol/
 
-Alternatively, clone the repo and run Python's built-in HTTP server from the repository directory:
+Alternatively, **double-click index.html** in Chrome/Edge. The complete audio worklet is embedded in the HTML and is loaded through a data: URL when opened as a local file (file://). If the browser blocks inline worklet modules, use Python's local HTTP server instead:
 
     python -m http.server 8000
 
-Open http://localhost:8000 in a recent Chrome or Edge browser. The app uses an AudioWorklet and must run over HTTPS or localhost; opening index.html directly via file:// is not supported.
+Open http://localhost:8000 in a recent Chrome or Edge browser. HTTPS / localhost is the reliable fallback if your browser restricts local file AudioWorklets.
 
 ## Controls
 
@@ -37,7 +37,7 @@ This does not claim anything quantum about the music, and it is not stem separat
 
 ## Structure
 
-- index.html — GUI, Web Audio player, synthetic demo, live visualization, recording.
+- index.html — self-contained GUI plus embedded copy of worklet for double-click file:// support, Web Audio player, synthetic demo, live visualization, recording.
 - residue-worklet.js — 12-input stereo DSP processor with the four residue modes.
 - tests/residue.test.cjs — Node.js processor tests (no dependencies).
 - .github/workflows/tests.yml — test workflow.
