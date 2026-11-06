@@ -1,5 +1,7 @@
 # FridayLolSol — Residue Orchestra
 
+![pic](pic.png)
+
 A browser instrument for hearing sounds that arise **between** songs, rather than just mixing them.
 
 **Load 2–12 tracks** (MP3, WAV, FLAC, OGG, or other files your browser can decode). Each track has an independent gain, start time on the shared timeline, in-point within the source, mute, solo and remove. Pick active track pairs, then listen to nonlinear cross-interactions. Songs are decoded to RAM locally; nothing is uploaded. The UI includes an original 3-voice synthetic demo so you can try it instantly.
