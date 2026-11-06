@@ -32,8 +32,12 @@ assert.equal(test([A],'imprint',[true,false]),0,'imprint with one song silent');
 console.log('10 DSP assertions passed');
 
 const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
-const match=html.match(/<script id="embedded-residue-engine" type="text\\/plain">\\s*([\\s\\S]*?)\\s*<\\/script>/);
-assert.ok(match,'standalone HTML includes its local AudioWorklet');
-assert.equal(match[1].trim(), content.trim(),'embedded engine matches the standalone DSP source exactly');
-assert.ok(html.includes("data:text/javascript;charset=utf-8,"),'local AudioWorklet uses data module source');
+const begin='<script id="embedded-residue-engine" type="text/plain">';
+const beginAt=html.indexOf(begin);
+assert.ok(beginAt>=0,'standalone HTML includes its local AudioWorklet');
+const endAt=html.indexOf('</script>',beginAt+begin.length);
+assert.ok(endAt>beginAt,'embedded engine has a closing tag');
+const inlineSource=html.slice(beginAt+begin.length,endAt);
+assert.equal(inlineSource.trim(),content.trim(),'embedded engine matches standalone DSP source exactly');
+assert.ok(html.includes('data:text/javascript;charset=utf-8,'),'local AudioWorklet uses a data module URL');
 console.log('Embedded standalone audio engine matches repository worklet');
