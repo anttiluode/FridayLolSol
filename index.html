@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070a13">
+<title>FRIDAY LOL — Residue Orchestra</title>
+<style>
+:root { color-scheme:dark;--bg:#080b13;--panel:#101624;--panel2:#151e2f;--edge:#2a374c;--ink:#eff6ff;--muted:#8ea0b7;--cyan:#6cebdc;--orange:#ffb96e;--pink:#f88ac9;--danger:#ff8290 }
+* { box-sizing:border-box }
+html {scroll-behavior:smooth}
+body { margin:0; background:radial-gradient(ellipse at 15% 0%,#1d2540 0%,transparent 45%),radial-gradient(ellipse at 88% 30%,#171a35 0%,transparent 44%),var(--bg); color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif }
+button,input,select { font:inherit }
+button { cursor:pointer }
+button:disabled{opacity:.3;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible {outline:2px solid var(--cyan);outline-offset:3px}
+.shell{max-width:1460px;margin:auto;padding:25px 26px 60px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:950;letter-spacing:.17em;font-size:12px;color:var(--orange)}
+.brand span{color:var(--cyan)}
+nav a{color:var(--muted);text-decoration:none;font-size:12px}
+nav a:hover{color:var(--ink)}
+.hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;padding:28px 0 25px}
+.eyebrow{font-family:ui-monospace,Consolas,monospace;color:var(--cyan);font-size:11px;letter-spacing:.21em;text-transform:uppercase}
+h1{font-size:clamp(39px,6vw,80px);letter-spacing:-.075em;line-height:.96;margin:12px 0 13px;font-weight:850}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--orange),var(--pink),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro{max-width:660px;line-height:1.65;font-size:14px;color:var(--muted);margin:0}
+.hero-mark{font:700 12px ui-monospace,Consolas,monospace;letter-spacing:.18em;border:1px solid var(--edge);border-radius:99px;padding:13px 17px;white-space:nowrap;color:var(--orange)}
+.layout{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(310px,.8fr);align-items:start;gap:18px}
+.main-col,.side-col{display:grid;gap:18px;min-width:0}
+.panel{background:linear-gradient(145deg,rgba(19,27,44,.95),rgba(12,18,30,.96));border:1px solid var(--edge);border-radius:18px;box-shadow:0 20px 80px #0003;overflow:hidden}
+.pad{padding:19px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.panel-title{text-transform:uppercase;letter-spacing:.16em;font:700 11px ui-monospace,Consolas,monospace;color:#cbd9e8}
+.micro{font:11px ui-monospace,Consolas,monospace;color:var(--muted)}
+button.primary{background:linear-gradient(115deg,var(--orange),#ff8b73);color:#20130d;border:0;border-radius:10px;padding:12px 18px;font-weight:850;box-shadow:0 8px 30px #ff9c5840}
+button.ghost, .btn-mini{background:#172235;border:1px solid #33445d;border-radius:10px;color:#dbe9f6;padding:10px 13px}
+button.ghost:hover,.btn-mini:hover{border-color:var(--cyan)}
+button.active{border-color:var(--orange)!important;color:var(--orange)!important}
+button.danger{color:var(--danger)}
+.actions{display:flex;flex-wrap:wrap;gap:9px}
+input[type=file]{display:none}
+.drop{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:85px;padding:17px 18px;border:1.5px dashed #476079;border-radius:13px;background:linear-gradient(90deg,#1223386b,#1c233663);transition:.15s}
+.drop.over{border-color:var(--cyan);background:#193d4b}
+.drop strong{font-size:14px}
+.drop p{font-size:12px;color:var(--muted);margin:6px 0 0}
+.track-stack{display:grid;gap:10px;margin-top:13px}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:27px 10px;border:1px dashed #2c3950;border-radius:12px;line-height:1.7}
+.track{--accent:var(--cyan);padding:14px;border:1px solid #303d53;background:#111c2d;border-radius:12px;position:relative;overflow:hidden}
+.track:before{position:absolute;content:"";inset:0 auto 0 0;width:3px;background:var(--accent)}
+.track-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.track-name{font-weight:750;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:400px}
+.track-controls{display:flex;flex-wrap:wrap;gap:5px}
+.btn-mini{font:700 10px ui-monospace,Consolas,monospace;padding:6px 9px;border-radius:7px}
+.track-meta{margin-top:6px;color:var(--muted);font:11px ui-monospace,Consolas,monospace}
+.track-grid{margin-top:14px;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px}
+.field-label{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:7px}
+.field-label b{color:#e2f3ff;font-weight:600;font-family:ui-monospace,Consolas,monospace}
+input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
+input[type=number],select{background:#0a1422;border:1px solid #374761;border-radius:9px;color:var(--ink);padding:9px 10px;width:100%;min-width:0}
+select{cursor:pointer}
+.track-grid input[type=number]{font-size:12px}
+.visual{padding:0;position:relative}
+.visual-top{display:flex;justify-content:space-between;gap:10px;align-items:center;position:absolute;z-index:1;inset:18px 18px auto}
+.visual-title{font:700 11px ui-monospace,Consolas,monospace;color:var(--cyan);letter-spacing:.13em}
+.visual-badge{color:#d4e4fa;border:1px solid #45617d;padding:5px 9px;border-radius:99px;font:10px ui-monospace,Consolas,monospace;background:#0a1523b0}
+#scope{width:100%;height:300px;display:block}
+.transport{padding:16px 20px 20px;border-top:1px solid var(--edge)}
+.transport-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.transport-actions{display:flex;align-items:center;gap:8px}
+.transport-actions .primary{font-size:20px;line-height:18px;min-width:55px}
+.transport-time{font:12px ui-monospace,Consolas,monospace;color:var(--muted)}
+#seek{width:100%;margin:16px 0 1px;accent-color:var(--orange)}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:17px}
+.control-wide{grid-column:1/-1}
+.small-description{font-size:12px;color:var(--muted);line-height:1.65;margin:7px 0 0}
+.mode-desc{min-height:60px;padding:11px 12px;background:#0b1525;border:1px solid #2b3c56;border-radius:9px}
+.pairs{display:flex;flex-wrap:wrap;gap:7px;min-height:40px;align-items:center}
+.pair{display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #354862;background:#101c2d;border-radius:9px;font-size:12px}
+.pair input{accent-color:var(--orange)}
+.readout{padding:14px;border:1px solid #324660;border-radius:10px;background:#0b1422}
+.readout strong{display:block;font:700 13px ui-monospace,Consolas,monospace;color:var(--cyan);margin-bottom:6px}
+.readout p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+.footer{color:var(--muted);font:11px ui-monospace,Consolas,monospace;line-height:1.8;margin-top:24px}
+.footer strong{color:var(--orange)}
+.toast{position:fixed;bottom:22px;right:22px;max-width:420px;z-index:20;background:#1c3045;border:1px solid #5b8996;border-radius:12px;padding:14px 20px;box-shadow:0 16px 70px #0008;color:#e9fbff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+@media(max-width:940px){.layout{grid-template-columns:1fr}.side-col{grid-row:2}.hero-mark{display:none}}
+@media(max-width:620px){.shell{padding:15px 12px 40px}.hero{padding:20px 0}.track-grid{grid-template-columns:1fr 1fr}.track-grid>div:first-child{grid-column:1/-1}.drop{display:grid}.controls{gap:14px}.transport-top{flex-wrap:wrap}#scope{height:230px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav><div class="brand">FRIDAY<span>LOL</span> / SONIC EXPERIMENTS</div><a href="https://github.com/anttiluode/FridayLolSol" target="_blank" rel="noopener noreferrer">OPEN SOURCE ↗</a></nav>
+<section class="hero">
+ <div><div class="eyebrow">An instrument for music that lives between songs</div><h1>Residue <em>Orchestra.</em></h1><p class="intro">Stack songs. Remove their familiar identities. Listen to the strange new signal created by their interaction. Two songs, three songs, or a small constellation of them. Everything runs in your browser.</p></div>
+ <div class="hero-mark">A × B ≠ A + B</div>
+</section>
+<div class="layout">
+ <div class="main-col">
+  <section class="panel pad">
+   <div class="panel-head"><div class="panel-title">01 / SOURCE CONSTELLATION</div><div id="trackCount" class="micro">0 / 12 SOURCES</div></div>
+   <div id="drop" class="drop"><div><strong>Drop your songs here</strong><p>MP3, WAV, OGG, FLAC or other audio your browser decodes. Multiple files at once.</p></div><div class="actions"><button type="button" class="primary" id="addButton">+ ADD SONGS</button><button type="button" class="ghost" id="demoButton">TRY A DEMO</button></div></div>
+   <input id="filePicker" type="file" accept="audio/*,.mp3,.wav,.flac,.ogg,.m4a,.aac" multiple>
+   <div id="trackList" class="track-stack"><div class="empty">No songs yet. Add two or more audio files, or try three built-in synthetic instruments.<br>Only the interaction between sources is heard by default.</div></div>
+  </section>
+  <section class="panel visual">
+   <div class="visual-top"><div class="visual-title">02 / THE UNHEARD FIELD</div><div id="modeBadge" class="visual-badge">CROSS-PULSE</div></div>
+   <canvas id="scope"></canvas>
+   <div class="transport">
+    <div class="transport-top"><div class="transport-actions"><button id="restart" class="ghost" title="Return to start">⟲</button><button id="play" class="primary" title="Play or pause">▶</button><button id="record" class="ghost" title="Record the live output">● REC</button></div><div id="clock" class="transport-time">00:00 / 00:00</div></div>
+    <input id="seek" type="range" min="0" max="1" step="0.01" value="0" aria-label="Timeline position">
+    <div class="micro">RECORD saves the live result locally (WebM/Opus or browser-supported audio format). Headphones recommended.</div>
+   </div>
+  </section>
+  <section class="panel pad">
+   <div class="panel-head"><div class="panel-title">03 / WHICH SONGS SHOULD MEET?</div><button class="btn-mini" id="allPairs">ALL PAIRS</button></div>
+   <div id="pairList" class="pairs"><span class="micro">Load two or more songs to choose pairs.</span></div>
+   <p class="small-description">Each enabled edge creates a cross-interaction. With three songs you can hear A×B, A×C, and B×C together; Triple Helix requires all three edges of a triangle.</p>
+  </section>
+ </div>
+ <aside class="side-col">
+  <section class="panel pad">
+   <div class="panel-head"><div class="panel-title">THE ALCHEMY</div><span class="micro">LIVE DSP</span></div>
+   <div class="field-label"><span>Residue species</span></div>
+   <select id="mode" aria-label="Residue species">
+    <option value="ring">01 — Cross-Pulse / sum & difference tones</option>
+    <option value="weave">02 — Phase Weave / antisymmetric delays</option>
+    <option value="imprint">03 — Imprint / envelope exchange</option>
+    <option value="triple">04 — Triple Helix / three-way product</option>
+   </select>
+   <div class="mode-desc small-description" id="modeDescription"></div>
+   <div class="controls">
+    <div><div class="field-label"><span>Interaction drive</span><b id="driveV">4.0×</b></div><input id="drive" type="range" min=".5" max="16" step=".1" value="4"></div>
+    <div><div class="field-label"><span>Output level</span><b id="outputV">72%</b></div><input id="output" type="range" min="0" max="1.2" step=".01" value=".72"></div>
+    <div><div class="field-label"><span>Low-cut</span><b id="highpassV">35 Hz</b></div><input id="highpass" type="range" min="10" max="1200" step="5" value="35"></div>
+    <div><div class="field-label"><span>High-cut</span><b id="lowpassV">13000 Hz</b></div><input id="lowpass" type="range" min="600" max="18000" step="100" value="13000"></div>
+    <div><div class="field-label"><span>Weave delay</span><b id="delayMsV">21 ms</b></div><input id="delayMs" type="range" min="2" max="100" step="1" value="21"></div>
+    <div><div class="field-label"><span>Wet interaction</span><b id="wetV">100%</b></div><input id="wet" type="range" min="0" max="1" step=".01" value="1"></div>
+    <div class="control-wide"><div class="field-label"><span>Original-song bleed (optional)</span><b id="dryV">0%</b></div><input id="dry" type="range" min="0" max="1" step=".01" value="0"></div>
+   </div>
+   <div class="actions" style="margin-top:20px"><button class="ghost" id="randomize">✦ SCATTER START TIMES</button><button class="ghost" id="resetParams">RESET EFFECT</button></div>
+   <p class="small-description">Start time shifts a track on the shared timeline. In-point skips into the song. Scatter nudges each track's start by up to 0.3 seconds for unexpected collisions.</p>
+  </section>
+  <section class="panel pad">
+   <div class="panel-head"><div class="panel-title">THE MATHEMATICS</div><span class="micro">NOT A WIGNER INVERSE</span></div>
+   <div class="readout"><strong id="formula">r(t) = Σ 2 xᵢ(t) xⱼ(t)</strong><p id="formulaExplanation">Cross-multiplication creates sum and difference frequencies. These weren't in either isolated source. The result is zero if either member of a pair is silent.</p></div>
+   <p class="small-description">This is a creative audio instrument inspired by the cross-terms of time-frequency analysis. It is <strong>not</strong> a literal audible inversion of the Wigner–Ville distribution. Layered songs need not be in the same key or tempo. That mismatch is part of the experiment.</p>
+  </section>
+  <section class="panel pad"><div class="panel-head"><div class="panel-title">THE LAB NOTEBOOK</div></div><p class="small-description">All decoding and processing take place locally. No song files are uploaded. The worklet processes stereo audio at your device's sample rate. Maximum 12 tracks. User-supplied music stays in your browser's memory and is cleared on reload.</p><p class="small-description" style="margin-top:12px">Try two versions of the same song with a tiny start offset in <strong>Phase Weave</strong>. Then try two unrelated songs in <strong>Cross-Pulse</strong>. Next, make a triangle with three different songs and switch to <strong>Triple Helix</strong>.</p></section>
+ </aside>
+</div>
+<footer class="footer"><strong>FRIDAY LOL SOL</strong> — invented for curiosity, built for ears. You control the sources and the recording. Use audio you have permission to process and share.</footer>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+const MAX_TRACKS = 12;
+const $ = id => document.getElementById(id);
+const colors = ['#6cebdc','#ffb96e','#f88ac9','#9cb7ff','#c8a8ff','#b0ef8b','#ffa2a2','#8bd5ff','#ffd986','#b6abd7','#6edacc','#f1a9ed'];
+const descriptions = {
+ ring: {label:'CROSS-PULSE', desc:'Multiply each pair of waveforms sample by sample. Multiplication generates sum- and difference-frequency sidebands. Two sources are required.', formula:'r(t) = Σ 2 xᵢ(t) xⱼ(t)', explanation:'A genuinely bilinear interaction: if either waveform disappears, that pair contributes nothing. The output emphasizes musical sidebands rather than either original song.'},
+ weave:{label:'PHASE WEAVE',desc:'A delayed, antisymmetric exchange between songs. Changing their relative start times changes what survives. Identical, aligned waveforms largely cancel.',formula:'r(t) = Σ 4 [xᵢ(t)xⱼ(t−τ) − xⱼ(t)xᵢ(t−τ)]',explanation:'Swapping source order reverses the sign. This cross-delay is sensitive to timing and phase, rather than merely adding the songs.'},
+ imprint:{label:'IMPRINT',desc:'Listen to one song driven by the other song’s changing loudness envelope—and subtract the reverse influence. A softer but unusual texture.',formula:'r(t) = Σ 2 [xᵢ(t)eⱼ(t) − xⱼ(t)eᵢ(t)]',explanation:'Each envelope eᵢ is an independent peak follower. The two songs modulate one another; neither original plays directly in the wet channel.'},
+ triple:{label:'TRIPLE HELIX',desc:'Only the simultaneous interaction of three songs is heard. An enabled triangle of pair connections is necessary. Expect sparse, strange pulses.',formula:'r(t) = Σ 8 xᵢ(t)xⱼ(t)xₖ(t)',explanation:'Three-way multiplication produces higher-order cross-interactions. With only two tracks this mode intentionally goes silent.'}
+};
+const tracks = [];
+let nextId = 1;
+const pairEnabled = new Map();
+let context = null, engine = null, analyser = null, master = null, capture = null;
+let recorder = null, recordingParts = [], recordingType = '';
+let playing = false, playhead = 0, startClock = 0, sources = [];
+let toastTimer = 0;
+const vals = {drive:4,output:.72,highpass:35,lowpass:13000,delayMs:21,wet:1,dry:0,mode:'ring'};
+const fmt = n => {
+ n = Math.max(0, Number(n)||0);
+ const h = Math.floor(n/3600), m = Math.floor((n%3600)/60), s = Math.floor(n%60);
+ return h ? [h,m,s].map((v,i)=> i ? String(v).padStart(2,'0') : v).join(':') : String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+};
+const esc = t => String(t).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function notify(text) { $('toast').textContent = text; $('toast').classList.add('on'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').classList.remove('on'),4200); }
+async function audio() {
+ if (context) {await context.resume();return;}
+ const Audio = window.AudioContext || window.webkitAudioContext;
+ if (!Audio || !Audio.prototype.audioWorklet) throw Error('AudioWorklet is unavailable. Use a recent browser on HTTPS or localhost.');
+ context = new Audio({latencyHint:'interactive'});
+ await context.audioWorklet.addModule(new URL('residue-worklet.js',location.href).href);
+ engine = new AudioWorkletNode(context,'residue-engine',{numberOfInputs:MAX_TRACKS,numberOfOutputs:1,outputChannelCount:[2]});
+ analyser = context.createAnalyser();
+ analyser.fftSize = 2048; analyser.smoothingTimeConstant = .78;
+ master = context.createGain(); master.gain.value = .95;
+ capture = context.createMediaStreamDestination();
+ engine.connect(analyser); analyser.connect(master); master.connect(context.destination); master.connect(capture);
+ sendSettings();
+}
+function duration() { return tracks.reduce((m,t)=>Math.max(m,t.start+Math.max(0,t.buffer.duration-t.trim)),0); }
+function position() { return playing && context ? Math.max(0,context.currentTime-startClock) : playhead; }
+function active(t) { const anySolo=tracks.some(x=>x.solo);return !t.muted && (!anySolo || t.solo); }
+function pairKey(a,b) { return [Math.min(a,b),Math.max(a,b)].join('|'); }
+function selectedPairs() {
+ const arr=[];
+ tracks.forEach((a,i)=> tracks.forEach((b,j)=>{
+   if(j>i && pairEnabled.get(pairKey(a.id,b.id))!==false) arr.push(i+'-'+j);
+ }));
+ return arr;
+}
+function sendSettings() {
+ if(!engine)return;
+ engine.port.postMessage({type:'settings',value:{...vals,gains:tracks.map(t=>t.gain),enabled:tracks.map(active),pairKeys:selectedPairs()}});
+}
+function updateMode(){
+ const m=descriptions[vals.mode];
+ $('modeBadge').textContent=m.label;
+ $('modeDescription').textContent=m.desc;
+ $('formula').textContent=m.formula;
+ $('formulaExplanation').textContent=m.explanation;
+ sendSettings();
+}
+function refreshCounters(){
+ $('trackCount').textContent=tracks.length+' / '+MAX_TRACKS+' SOURCES';
+ $('seek').max=Math.max(.01,duration());
+ $('clock').textContent=fmt(Math.min(duration(),position()))+' / '+fmt(duration());
+ $('play').disabled=tracks.length===0;
+ $('record').disabled=tracks.length===0;
+ $('randomize').disabled=tracks.length===0;
+}
+function addTrack(name,buffer) {
+ if(tracks.length>=MAX_TRACKS){notify('Maximum '+MAX_TRACKS+' tracks reached.');return;}
+ const t={id:nextId++,name,buffer,gain:.85,start:0,trim:0,muted:false,solo:false};
+ tracks.push(t);
+ renderTracks();renderPairs();refreshCounters();sendSettings();
+}
+function renderTracks(){
+ const box=$('trackList');
+ if(!tracks.length){box.innerHTML='<div class="empty">No songs yet. Add two or more audio files, or try three built-in synthetic instruments.<br>Only interactions between sources play by default.</div>';return;}
+ box.innerHTML=tracks.map((t,i)=>'<div class="track" data-id="'+t.id+'" style="--accent:'+colors[i%colors.length]+'">'+
+ '<div class="track-top"><div style="min-width:0"><div class="track-name" title="'+esc(t.name)+'">'+String(i+1).padStart(2,'0')+' / '+esc(t.name)+'</div><div class="track-meta">'+fmt(t.buffer.duration)+' • '+t.buffer.sampleRate+' Hz • '+t.buffer.numberOfChannels+'ch</div></div>'+
+ '<div class="track-controls"><button class="btn-mini '+(t.muted?'active':'')+'" data-action="mute" aria-label="Mute '+esc(t.name)+'">MUTE</button><button class="btn-mini '+(t.solo?'active':'')+'" data-action="solo" aria-label="Solo '+esc(t.name)+'">SOLO</button><button class="btn-mini danger" data-action="remove" aria-label="Remove '+esc(t.name)+'">×</button></div></div>'+
+ '<div class="track-grid"><div><div class="field-label"><span>Strength</span><b data-display="gain">'+Math.round(t.gain*100)+'%</b></div><input data-field="gain" type="range" min="0" max="2" step=".01" value="'+t.gain+'"></div>'+
+ '<div><div class="field-label"><span>Start time (s)</span></div><input data-field="start" aria-label="Timeline start time" type="number" min="0" max="36000" step=".01" value="'+t.start.toFixed(2)+'"></div>'+
+ '<div><div class="field-label"><span>In-point (s)</span></div><input data-field="trim" aria-label="Time skipped into source" type="number" min="0" max="'+Math.max(0,t.buffer.duration-.01).toFixed(2)+'" step=".01" value="'+t.trim.toFixed(2)+'"></div></div></div>').join('');
+ box.querySelectorAll('.track').forEach(el=>{
+  const t=tracks.find(x=>x.id===Number(el.dataset.id));
+  el.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',()=>{
+   const a=b.dataset.action;
+   if(a==='remove'){ const idx=tracks.indexOf(t);if(idx>=0) tracks.splice(idx,1); refreshTransport(); }
+   if(a==='mute')t.muted=!t.muted;
+   if(a==='solo')t.solo=!t.solo;
+   renderTracks();renderPairs();refreshCounters();sendSettings();
+  }));
+  el.querySelectorAll('input[data-field]').forEach(input=>{
+   const key=input.dataset.field;
+   const handler=()=>{
+    const num=Number(input.value);
+    if(!Number.isFinite(num))return;
+    if(key==='gain'){t.gain=Math.max(0,Math.min(2,num));el.querySelector('[data-display=gain]').textContent=Math.round(t.gain*100)+'%';sendSettings();}
+    if(key==='start'){t.start=Math.max(0,Math.min(36000,num));refreshCounters();refreshTransport();}
+    if(key==='trim'){t.trim=Math.max(0,Math.min(t.buffer.duration-.01,num));refreshCounters();refreshTransport();}
+   };
+   input.addEventListener(key==='gain'?'input':'change',handler);
+  });
+ });
+}
+function renderPairs(){
+ const box=$('pairList');
+ const items=[];
+ tracks.forEach((a,i)=>tracks.forEach((b,j)=>{
+  if(j<=i)return;
+  const key=pairKey(a.id,b.id);
+  if(!pairEnabled.has(key))pairEnabled.set(key,true);
+  items.push('<label class="pair"><input type="checkbox" data-pair="'+key+'" '+(pairEnabled.get(key)?'checked':'')+'><span style="color:'+colors[i%colors.length]+'">'+(i+1)+'</span> × <span style="color:'+colors[j%colors.length]+'">'+(j+1)+'</span></label>');
+ }));
+ box.innerHTML=items.length?items.join(''):'<span class="micro">Load two or more songs to choose pairs.</span>';
+ box.querySelectorAll('[data-pair]').forEach(input=>input.addEventListener('change',()=>{pairEnabled.set(input.dataset.pair,input.checked);sendSettings();}));
+}
+function stopSources(){for(const s of sources){try{s.stop();}catch(e){}try{s.disconnect();}catch(e){}} sources=[];}
+function schedule(){
+ if(!context || !engine)return;
+ engine.port.postMessage({type:'reset'});
+ sendSettings();
+ startClock=context.currentTime-playhead;
+ const now=context.currentTime+.05;
+ startClock+=.05;
+ tracks.forEach((t,i)=>{
+  const begin=Math.max(0,t.start-playhead);
+  const off=t.trim+Math.max(0,playhead-t.start);
+  if(off>=t.buffer.duration-.002)return;
+  const src=context.createBufferSource();
+  src.buffer=t.buffer;
+  src.connect(engine,0,i);
+  src.start(now+begin,off);
+  sources.push(src);
+ });
+ playing=true;
+ $('play').textContent='❚❚';
+}
+async function playPause(){
+ if(playing){pause();return;}
+ if(!tracks.length){notify('Add at least two songs, or try the built-in demo.');return;}
+ try{
+  await audio();
+  if(playhead>=duration()-.01)playhead=0;
+  schedule();
+  if(tracks.length<2)notify('One song alone has no pairwise wet residue. Add a second song!');
+ }catch(e){console.error(e);notify('Audio could not start: '+e.message);}
+}
+function pause(){
+ if(!playing)return;
+ playhead=Math.min(duration(),position());
+ playing=false;
+ stopSources();
+ $('play').textContent='▶';
+}
+function seekTo(t){
+ const shouldPlay=playing;
+ if(shouldPlay){pause();}
+ playhead=Math.max(0,Math.min(duration(),t));
+ if(shouldPlay && playhead<duration()){schedule();}
+ refreshCounters();
+}
+function refreshTransport(){if(playing){const pos=position();pause();playhead=Math.min(pos,duration());schedule();}else playhead=Math.min(playhead,duration());refreshCounters();}
+async function upload(files){
+ const all=Array.from(files).filter(f=>f.type.startsWith('audio/')||/\.(wav|mp3|ogg|flac|aac|m4a|opus|aiff?)$/i.test(f.name));
+ if(!all.length){notify('Choose audio files.');return;}
+ if(tracks.length>=MAX_TRACKS){notify('The stack is full. Remove a track to add another.');return;}
+ try{await audio();}catch(e){notify('Audio initialization failed: '+e.message);return;}
+ const wasPlaying=playing;if(wasPlaying)pause();
+ let ok=0;
+ for(const f of all){
+  if(tracks.length>=MAX_TRACKS)break;
+  try{
+   const buffer=await context.decodeAudioData(await f.arrayBuffer());
+   addTrack(f.name,buffer);ok++;
+  }catch(e){notify('Could not decode '+f.name+': '+e.message);}
+ }
+ $('filePicker').value='';
+ if(wasPlaying && tracks.length)await playPause();
+ if(ok)notify('Added '+ok+' song'+(ok===1?'':'s')+'. Choose a residue species and press Play.');
+}
+function demoBuffer(kind){
+ const sr=context.sampleRate, dur=28, len=Math.floor(sr*dur);
+ const buf=context.createBuffer(2,len,sr);
+ const a=buf.getChannelData(0),b=buf.getChannelData(1);
+ const notes=[0,3,7,10,7,5,3,2,0,7,10,12,7,5,3,-2];
+ let phase=0,phase2=0;
+ for(let n=0;n<len;n++){
+  const t=n/sr, beat=t*1.8, idx=Math.floor(beat);
+  const step=beat-Math.floor(beat);
+  let value=0;
+  if(kind===0){
+   const pitch=55*Math.pow(2,notes[(Math.floor(idx/2))%notes.length]/12);
+   phase+=2*Math.PI*pitch/sr;
+   value=(.29*Math.sin(phase)+.11*Math.sin(2*phase))*(.45+.55*Math.exp(-3*step));
+  }else if(kind===1){
+   const pitch=220*Math.pow(2,notes[(idx+3)%notes.length]/12);
+   phase+=2*Math.PI*pitch/sr;
+   const env=Math.exp(-6*step);
+   value=(.19*Math.sin(phase+.25*Math.sin(phase*2))+.06*Math.sin(3*phase))*env;
+  }else{
+   const env=Math.exp(-12*(beat%0.5));
+   phase+=2*Math.PI*(105+60*Math.exp(-12*(beat%0.5)))/sr;
+   phase2+=2*Math.PI*780/sr;
+   value=(Math.sin(phase)*.22+Math.sin(phase2)*.08)*env;
+  }
+  const fade=Math.min(1,t/.04,(dur-t)/.15);
+  a[n]=value*Math.max(0,fade);
+  b[n]=value*Math.max(0,fade)*(.94+.06*Math.sin(t*2.1+kind));
+ }
+ return buf;
+}
+async function loadDemo(){
+ try{
+  await audio();if(playing)pause();
+  const labels=['DEMO / low wandering bass','DEMO / bright melodic fragments','DEMO / metallic heartbeat'];
+  const amount=Math.min(3,MAX_TRACKS-tracks.length);
+  if(!amount){notify('The stack is already full.');return;}
+  for(let i=0;i<amount;i++)addTrack(labels[i],demoBuffer(i));
+  notify('Three original synthetic voices loaded. These are not sampled songs.');
+ }catch(e){notify('Demo unavailable: '+e.message);}
+}
+async function toggleRecord(){
+ if(recorder && recorder.state==='recording'){recorder.stop();$('record').classList.remove('active');$('record').textContent='● REC';return;}
+ if(!window.MediaRecorder){notify('Recording is unavailable in this browser.');return;}
+ if(!tracks.length){notify('Load songs first.');return;}
+ try{
+  await audio();
+  if(!playing)await playPause();
+  const candidates=['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/webm'];
+  recordingType=candidates.find(t=>MediaRecorder.isTypeSupported(t))||'';
+  recorder=new MediaRecorder(capture.stream,recordingType?{mimeType:recordingType}:undefined);
+  recordingParts=[];
+  recorder.ondataavailable=e=>{if(e.data.size)recordingParts.push(e.data);};
+  recorder.onstop=()=>{
+   const type=recorder.mimeType||recordingType||'audio/webm';
+   const blob=new Blob(recordingParts,{type});
+   if(!blob.size){notify('Nothing was recorded.');return;}
+   const ext=type.includes('ogg')?'ogg':type.includes('mp4')?'m4a':'webm';
+   const url=URL.createObjectURL(blob);
+   const link=document.createElement('a');
+   link.href=url;link.download='FridayLol-Residue-'+new Date().toISOString().replace(/[:.]/g,'-')+'.'+ext;
+   document.body.appendChild(link);link.click();link.remove();
+   setTimeout(()=>URL.revokeObjectURL(url),30000);
+   notify('Saved your recorded residue locally.');
+  };
+  recorder.start(1000);$('record').classList.add('active');$('record').textContent='■ STOP REC';notify('Recording the output. Click STOP REC to download.');
+ }catch(e){console.error(e);notify('Recording failed: '+e.message);}
+}
+function bindControls(){
+ for(const id of ['drive','output','highpass','lowpass','delayMs','wet','dry']){
+  const el=$(id),label=$(id+'V');
+  el.addEventListener('input',()=>{
+   vals[id]=Number(el.value);
+   label.textContent=({drive:()=>vals[id].toFixed(1)+'×',output:()=>Math.round(vals[id]*100)+'%',highpass:()=>vals[id]+' Hz',lowpass:()=>vals[id]+' Hz',delayMs:()=>vals[id]+' ms',wet:()=>Math.round(vals[id]*100)+'%',dry:()=>Math.round(vals[id]*100)+'%'}[id])();
+   sendSettings();
+  });
+ }
+ $('mode').addEventListener('change',()=>{vals.mode=$('mode').value;updateMode();});
+ $('resetParams').addEventListener('click',()=>{
+  const defaults={drive:4,output:.72,highpass:35,lowpass:13000,delayMs:21,wet:1,dry:0,mode:'ring'};
+  Object.assign(vals,defaults);
+  for(const id of Object.keys(defaults)){if($(id)){ $(id).value=defaults[id]; if(id!=='mode')$(id).dispatchEvent(new Event('input')); }}
+  updateMode();
+ });
+}
+function draw(){
+ const canvas=$('scope'), c=canvas.getContext('2d'), bounds=canvas.getBoundingClientRect();
+ const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,Math.round(bounds.width*dpr)),h=Math.max(1,Math.round(bounds.height*dpr));
+ if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
+ c.setTransform(dpr,0,0,dpr,0,0);
+ const W=bounds.width,H=bounds.height,time=performance.now()/1000;
+ c.fillStyle='#08121f';c.fillRect(0,0,W,H);
+ const g=c.createRadialGradient(W*.47,H*.54,8,W*.47,H*.54,W*.65);
+ g.addColorStop(0,'#1b3c4b');g.addColorStop(.52,'#18283c');g.addColorStop(1,'#08121f');
+ c.fillStyle=g;c.fillRect(0,0,W,H);
+ c.lineWidth=.7;c.strokeStyle='#92b4d515';
+ for(let i=0;i<11;i++){const y=H*(i+1)/12;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+ let fft=null,td=null;
+ if(analyser){fft=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(fft);td=new Float32Array(analyser.fftSize);analyser.getFloatTimeDomainData(td);}
+ const bars=90,base=H*.82;
+ for(let k=0;k<bars;k++){
+  const t=k/bars,idx=Math.min(fft?fft.length-1:0,Math.floor(Math.pow(t,1.8)*(fft?fft.length-1:0)));
+  const a=fft?fft[idx]/255: .055+.035*Math.sin(time*1.4+k*.2);
+  const height=a*a*H*.53;
+  c.fillStyle=k%3?'#55ddcd77':'#ffba7677';
+  c.fillRect(k*W/bars,base-height,Math.max(1,W/bars-2),height);
+ }
+ c.lineWidth=2;c.shadowBlur=19;c.shadowColor='#61ebd2';c.strokeStyle='#78ecdb';
+ c.beginPath();
+ for(let i=0;i<250;i++){
+  const x=i/249*W, sample=td?td[Math.min(td.length-1,Math.floor(i/249*td.length))]:Math.sin(i*.085+time*1.2)*.005;
+  const y=H*.43-sample*H*.67;
+  if(!i)c.moveTo(x,y);else c.lineTo(x,y);
+ }
+ c.stroke();c.shadowBlur=0;
+ c.fillStyle='#c5d4e4';c.font='10px ui-monospace, Consolas, monospace';
+ c.fillText(playing?'● LIVE CROSS-INTERACTION':'○ FIELD AT REST',16,H-19);
+ const d=duration(),p=position();
+ if(playing && d>0 && p>=d+.04){pause();playhead=d;}
+ if(document.activeElement!==$('seek')){$('seek').max=Math.max(.01,d);$('seek').value=Math.min(d,p);}
+ $('clock').textContent=fmt(Math.min(d,p))+' / '+fmt(d);
+ requestAnimationFrame(draw);
+}
+function setup(){
+ $('addButton').addEventListener('click',()=>$('filePicker').click());
+ $('filePicker').addEventListener('change',e=>upload(e.target.files));
+ $('demoButton').addEventListener('click',loadDemo);
+ const drop=$('drop');
+ for(const ev of ['dragenter','dragover'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');});
+ for(const ev of ['dragleave','drop'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');});
+ drop.addEventListener('drop',e=>{if(e.dataTransfer.files.length)upload(e.dataTransfer.files);});
+ $('play').addEventListener('click',playPause);
+ $('restart').addEventListener('click',()=>seekTo(0));
+ $('record').addEventListener('click',toggleRecord);
+ $('seek').addEventListener('change',e=>seekTo(Number(e.target.value)));
+ $('allPairs').addEventListener('click',()=>{for(const a of tracks)for(const b of tracks)if(a.id<b.id)pairEnabled.set(pairKey(a.id,b.id),true);renderPairs();sendSettings();});
+ $('randomize').addEventListener('click',()=>{const was=playing;if(was)pause();tracks.forEach(t=>t.start=+(Math.random()*.3).toFixed(3));renderTracks();refreshCounters();if(was)playPause();notify('Scattered track starts over 300 ms.');});
+ window.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&!['INPUT','SELECT','BUTTON','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();playPause();}
+ });
+ bindControls(); updateMode(); refreshCounters();requestAnimationFrame(draw);
+}
+setup();
+</script>
+</body>
+</html>
