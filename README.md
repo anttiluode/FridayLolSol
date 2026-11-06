@@ -6,7 +6,7 @@ A browser instrument for hearing sounds that arise **between** songs, rather tha
 
 ## Play
 
-The GitHub Pages workflow is included. Once Pages is enabled for the repository (Settings → Pages → Source: GitHub Actions), open:
+GitHub Pages is configured for this repository. When its deployment finishes, open:
 
 https://anttiluode.github.io/FridayLolSol/
 
@@ -41,7 +41,7 @@ This does not claim anything quantum about the music, and it is not stem separat
 - residue-worklet.js — 12-input stereo DSP processor with the four residue modes.
 - tests/residue.test.cjs — Node.js processor tests (no dependencies).
 - .github/workflows/tests.yml — test workflow.
-- .github/workflows/pages.yml — GitHub Pages deployment workflow.
+- GitHub Pages is published by the repository's existing automatic Pages deployment.
 
 ## Notes
 
